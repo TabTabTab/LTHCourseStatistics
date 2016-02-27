@@ -1,87 +1,13 @@
 #!/usr/bin/python2
 
-from config import PKL_STORAGE_FILE, FROM_SCHOOL_YEAR, TO_SCHOOL_YEAR,\
-    COURSE_BASE_URL
+from config import COURSE_BASE_URL
+from course import Course
+from errors import handle_error
 
 from lxml import html
 import requests
-from collections import defaultdict
-import time
-import sys
-import pickle
 
-class StoredCourseData(object):
-    '''
-    Container for storing saved courses
-    '''
-    def __init__(self, courses_data=None, from_year=FROM_SCHOOL_YEAR,
-        to_year=TO_SCHOOL_YEAR, last_update=time.time(), from_pkl=False):
-        if from_pkl:
-            self.load()
-        else:
-            self.courses_data = courses_data
-            self.from_year = from_year
-            self.to_year = to_year
-            self.last_update = last_update
-
-    def get_courses(self):
-        return self.courses
-
-    def save(self):
-        with open(PKL_STORAGE_FILE, 'wb') as pkl_file:
-            # Pickle dictionary using protocol 0.
-            pickle.dump(self, pkl_file)
-
-    def load(self):
-        try:
-            with open(PKL_STORAGE_FILE, 'rb') as pkl_file:
-                stored_course_data = pickle.load(pkl_file)
-                self.courses_data = stored_course_data.courses_data
-                self.from_year = stored_course_data.from_year
-                self.to_year = stored_course_data.to_year
-                self.last_update = stored_course_data.last_update
-                return self
-        except IOError:
-            handle_error("Could not access or find stored data in: '{0}'"
-                .format(PKL_STORAGE_FILE))
-    def __str__(self):
-        return """from year: {0}, to year: {1}, last update {2}, course_data:\
-            \n{3}""".format(
-            self.from_year, self.to_year, self.last_update, self.courses_data)
-
-class Course(object):
-    '''
-    Represents a course
-    '''
-    def __init__(self, code, points, level, initial_course_type=None):
-        self.course_code = code
-        self.points = points
-        self.level = level
-        self.course_types = [initial_course_type] if initial_course_type else []
-
-    def __str__(self):
-        return "course code: {0}, points: {1}, level {2}, types: {3}".format(
-            self.course_code, self.points, self.level, self.course_types)
-
-    def __repr__(self):
-        return "{0}\n".format(self.__str__())
-
-    def get_course_code(self):
-        return self.course_code
-
-    def merge_course_info(self, other_course):
-        '''
-        Merges the information from the other course too the current course
-        This currently only concerns the course types
-        '''
-        self.course_types += other_course.course_types
-
-def handle_error(error_msg="An error occured", exit=True):
-    print(error_msg)
-    if exit:
-        sys.exit(1)
-
-def get_school_years(from_year, to_year):
+def list_school_years(from_year, to_year):
     '''
     Creates a list of school years in string format
     from_year (int) - the year the first school year starts
@@ -136,13 +62,13 @@ def html_to_course(course_element, course_type):
         return None
     return course
 
-def update_courses_data():
+def scrape_courses_data(from_year, to_year):
     '''
     Scrapes the LTH course pages in order to replace
     the current stored courses data
     '''
     courses_data = dict()
-    school_years = get_school_years(FROM_SCHOOL_YEAR, TO_SCHOOL_YEAR)
+    school_years = list_school_years(from_year, to_year)
     for school_year in school_years:
         print ("Updating ", school_year)
         url = COURSE_BASE_URL.format(school_year)
@@ -155,9 +81,7 @@ def update_courses_data():
                 course_table_info(course_table, school_year, courses_data)
         except requests.exceptions.ConnectionError:
             handle_error("Failed to establish connection")
-    StoredCourseData(courses_data).save()
-
+    return courses_data
 
 if __name__ == '__main__':
-    update_courses_data()
-    print(StoredCourseData(from_pkl=True))
+    print(scrape_courses_data(10, 11))
