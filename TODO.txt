@@ -1,0 +1,1 @@
+* Make smarter parser, remove "if course in line", instead split the line into items and check the dict for these items

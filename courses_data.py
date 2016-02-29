@@ -1,30 +1,33 @@
 #!/usr/bin/python2
 
 from course_scraper import scrape_courses_data
-from config import FROM_SCHOOL_YEAR, TO_SCHOOL_YEAR, PKL_STORAGE_FILE
+from config import FROM_SCHOOL_YEAR, TO_SCHOOL_YEAR, PROGRAM, PKL_STORAGE_FILE
 
 import pickle
 import time
+import multiprocessing
+
 class CoursesData(object):
     '''
     Container for storing saved courses
     '''
     def __init__(self, from_pkl=False, from_scrape=False,
-        from_year=FROM_SCHOOL_YEAR, to_year=TO_SCHOOL_YEAR):
+        from_year=FROM_SCHOOL_YEAR, to_year=TO_SCHOOL_YEAR, program=PROGRAM):
         self.courses_data = None
         self.last_update = None
         self.from_year = from_year
         self.to_year = to_year
+        self.program = program
         if from_pkl:
             self.load_from_pkl()
         elif from_scrape:
             self.scrape()
 
     def get_courses(self):
-        return self.courses
+        return self.courses_data
 
     def scrape(self):
-        courses_data = scrape_courses_data(self.from_year, self.to_year)
+        courses_data = scrape_courses_data(self.from_year, self.to_year, self.program)
         self.courses_data = courses_data
         self.last_update = time.time()
 

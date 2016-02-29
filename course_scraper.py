@@ -62,7 +62,7 @@ def html_to_course(course_element, course_type):
         return None
     return course
 
-def scrape_courses_data(from_year, to_year):
+def scrape_courses_data(from_year, to_year, program):
     '''
     Scrapes the LTH course pages in order to replace
     the current stored courses data
@@ -70,8 +70,8 @@ def scrape_courses_data(from_year, to_year):
     courses_data = dict()
     school_years = list_school_years(from_year, to_year)
     for school_year in school_years:
-        print ("Updating ", school_year)
-        url = COURSE_BASE_URL.format(school_year)
+        print ("Updating ", school_year, program)
+        url = COURSE_BASE_URL.format(school_year, program)
         try:
             page = requests.get(url)
             page.encoding = 'utf-8'
@@ -84,4 +84,4 @@ def scrape_courses_data(from_year, to_year):
     return courses_data
 
 if __name__ == '__main__':
-    print(scrape_courses_data(10, 11))
+    print(scrape_courses_data(10, 11, 'D'))
