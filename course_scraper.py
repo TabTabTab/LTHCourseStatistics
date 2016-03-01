@@ -24,12 +24,12 @@ def course_table_info(course_table, school_year, container):
     '''
     table_parent = course_table.getparent()
     th3_above_parent = table_parent.getprevious()
-    course_type = th3_above_parent.text
+    specialisation = th3_above_parent.text
     course_body = course_table.getchildren()[1] #this should give us the "tbody"
     courses = course_body.getchildren()
 
     for course_html in courses:
-        course = html_to_course(course_html, course_type)
+        course = html_to_course(course_html, specialisation)
         add_course(course, container)
 
 def add_course(course, container):
@@ -44,7 +44,7 @@ def add_course(course, container):
         else:
             container[course_code] = course
 
-def html_to_course(course_element, course_type):
+def html_to_course(course_element, specialisation):
     '''
     Scrapes information from a html course element and creates a course object
     containing the gathered information
@@ -57,7 +57,7 @@ def html_to_course(course_element, course_type):
         info = dict(zip(vals, map(lambda e:e.text, elements[1:])))
         points = float(info['points'].replace(',','.'))
         level = info['level']
-        course = Course(course_code, points, level, course_type)
+        course = Course(course_code, points, level, specialisation)
     except IndexError:
         return None
     return course

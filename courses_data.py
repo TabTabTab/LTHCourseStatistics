@@ -18,10 +18,18 @@ class CoursesData(object):
         self.from_year = from_year
         self.to_year = to_year
         self.program = program
+        self.available_specialisations = set()
         if from_pkl:
             self.load_from_pkl()
         elif from_scrape:
             self.scrape()
+
+    def update_all_course_types(self):
+        specialisation_sets = [course.specialisations for course in self.get_courses()]
+        self.available_specialisations = self.specialisations.union(other_course.specialisations)
+
+    def get_available_specialisations(self):
+        return self.available_specialisations
 
     def get_courses(self):
         return self.courses_data

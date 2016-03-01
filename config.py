@@ -7,7 +7,7 @@ TO_SCHOOL_YEAR = 16
 
 PROGRAM = 'D'
 
-COURSE_BASE_URL = "http://kurser.lth.se/lot/?lasar={0}&sort1=lp&sort2=slut_lp&sort3=namn&prog={1}&forenk=t&val=program"
+COURSE_BASE_URL = "http://kurser.lth.se/lot/?lasar={0}&sort1=lp&sort2=slut_lp&sort3=namn&prog={1}&forenk=t&val=program&lang=en"
 
 BASE_DIR = os.path.dirname(os.path.realpath(__file__))
 
