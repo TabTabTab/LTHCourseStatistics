@@ -26,9 +26,10 @@ def course_table_info(course_table, school_year, container):
     th3_above_parent = table_parent.getprevious()
     specialisation = th3_above_parent.text
     course_body = course_table.getchildren()[1] #this should give us the "tbody"
-    courses = course_body.getchildren()
+    #course_thread = course_body.getprevious()
+    courses_html = course_body.getchildren()
 
-    for course_html in courses:
+    for course_html in courses_html:
         course = html_to_course(course_html, specialisation)
         add_course(course, container)
 
@@ -54,7 +55,7 @@ def html_to_course(course_element, specialisation):
         vals = ["points", "level"]
         elements = course_element.getchildren()
         course_code = elements[0].getchildren()[0].text
-        info = dict(zip(vals, map(lambda e:e.text, elements[1:])))
+        info = dict(zip(vals, map(lambda e: e.text, elements[1:])))
         points = float(info['points'].replace(',','.'))
         level = info['level']
         course = Course(course_code, points, level, specialisation)

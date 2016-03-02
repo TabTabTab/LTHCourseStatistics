@@ -24,6 +24,9 @@ class Course(object):
     def get_level(self):
         return self.level
 
+    def is_level(self, level):
+        return self.level == level 
+
     def get_specialisations(self):
         return self.specialisations
 

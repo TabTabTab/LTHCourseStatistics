@@ -1,1 +1,9 @@
 * Make smarter parser, remove "if course in line", instead split the line into items and check the dict for these items
+
+* Need a regex for (d+\.d)_ ([3,4,5,G]) in order to find he grade, where (d+\.d) is the courses HP.
+    A complication is that the grade is not always listed at the same position as the course.
+    A need for a semi "smart" approach is thus needed. Fx, try to match each listed grade with the first course
+    that has the same amount of HP, and then present the data to the user and ask "is this correct?".
+    Wish there were a better way... not a fan of scraping a PDF...
+
+    m = re.match("(\d+\.\d)_ ([345G])", str)

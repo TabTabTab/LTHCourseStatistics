@@ -1,6 +1,6 @@
 #!/usr/bin/python2
 
-from config import REMOVABLE_CHARACTERS
+from config import REMOVABLE_CHARACTERS, AVAILABE_GRADES
 from courses_data import CoursesData
 from errors import handle_error
 from course import Course
@@ -9,6 +9,7 @@ from student_course_summary import StudentCourseSummary
 import sys, os
 from subprocess import Popen
 import tempfile
+import re
 
 UNFINISHED_COURSES_HEADER = "Credits obtained in unfinished courses"
 COURSES_HEADER = "Courses"
@@ -24,21 +25,35 @@ def pdf_to_text(pdf_file, temp_pdf_text_file_name):
     return temp_pdf_text_file_name
 
 def parse_text(pdf_text_file, available_courses):
+    grade_regex = re.compile(".*(\d+\.\d)_ ([{0}]).*".format(AVAILABE_GRADES))
+    def grade_in_line(ling, grade_list):
+        '''
+        Checks if a line contains a grade, if so, the grade is added to
+        the grade list.
+        '''
+        grade_match = grade_regex.match(line)
+        if grade_match:
+            points = float(grade_match.group(1))
+            grade = grade_match.group(2)
+            grade_list.append([grade, points])
+
     def course_in_line(line, course_list):
         '''
         Checks if a line contains a course code, if so, the course is added to
-        the course list.
-        Otherwise, none is returned
+        the course list and True is returned.
+        Otherwise, False is returned
         '''
         line = line.replace(REMOVABLE_CHARACTERS, '')
         words = line.split(' ')
         courses_in_line = [word for word in words if word in available_courses]
         if courses_in_line:
             course_list.append(available_courses[courses_in_line[0]])
+            return True
         else:
-            return None
+            return False
     finished_courses = []
     unfinished_courses = []
+    grade_list = []
     is_parsing_courses = False
     active_course_list = None
     with open(pdf_text_file, 'r') as pdf_text_file:
@@ -50,8 +65,10 @@ def parse_text(pdf_text_file, available_courses):
             elif line == UNFINISHED_COURSES_HEADER:
                 active_course_list = unfinished_courses
             elif is_parsing_courses:
+                grade_in_line(line, grade_list)
                 course_in_line(line, active_course_list)
-    student_course_summary = StudentCourseSummary(finished_courses, unfinished_courses)
+    grade_list = grade_list[:len(finished_courses)]
+    student_course_summary = StudentCourseSummary(finished_courses, unfinished_courses, grade_list)
     return student_course_summary
 
 def main(argv):
