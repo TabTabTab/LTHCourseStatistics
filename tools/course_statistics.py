@@ -1,4 +1,4 @@
-#!/usr/bin/python2
+#!/usr/bin/python3
 
 import sys
 
@@ -13,7 +13,7 @@ def main(argv):
         handle_error("Please provide a course pdf file..")
     pdf_file = argv[0].strip()
     # just for test
-    courses_data = CoursesData(from_pkl=True, from_scrape=False,
+    courses_data = CoursesData(from_pkl=False, from_scrape=True,
         from_year=FROM_SCHOOL_YEAR, to_year=TO_SCHOOL_YEAR, program=PROGRAM)
     courses_data.save()
     read_course_data = get_student_results(pdf_file, courses_data)

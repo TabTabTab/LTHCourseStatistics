@@ -1,4 +1,4 @@
-#!/usr/bin/python2
+#!/usr/bin/python3
 
 from config import REMOVABLE_CHARACTERS, AVAILABE_GRADES
 from courses_data import CoursesData

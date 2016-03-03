@@ -1,4 +1,4 @@
-#!/usr/bin/python2
+#!/usr/bin/python3
 
 from config import COURSE_BASE_URL
 from course import Course
@@ -14,7 +14,7 @@ def list_school_years(from_year, to_year):
     to_year (int) - the year the last school year ends
     '''
     return ["{0}_{1}".format(year, year + 1)
-        for year in xrange(from_year, to_year)]
+        for year in range(from_year, to_year)]
 
 def course_table_info(course_table, school_year, container):
     '''

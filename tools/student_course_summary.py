@@ -1,4 +1,4 @@
-#!/usr/bin/python2
+#!/usr/bin/python3
 
 from config import WEIGHTED_GRADES
 
@@ -24,7 +24,7 @@ class StudentCourseSummary(object):
             self.calc_finished_points(),self.calc_finished_A_points(), self.finished_courses, self.calc_unfinished_points(), self.unfinished_courses)
         specialisation_summary_str = "____SPECIALISATIONS____\n{0}".format(
             "\n".join(["\n\n        {0}\n\nPOINTS:{1}\nA POINTS:{2}\nRegular COURSES:{3}\n\nA COURSES:{4}".
-            format(s, p, ap, rc, ac) for s, [p, ap, rc, ac] in self.specialisation_progress.iteritems()]))
+            format(s, p, ap, rc, ac) for s, [p, ap, rc, ac] in self.specialisation_progress.items()]))
         return "\n".join([header_str, average_grade_str, general_summary_str, specialisation_summary_str])
 
     def calc_finished_points(self):
