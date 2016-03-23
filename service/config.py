@@ -2,7 +2,7 @@ import os
 
 BASE_DIR = os.path.dirname(os.path.realpath(__file__))
 
-PKL_STORAGE_FILE = os.path.join(BASE_DIR, 'courses_data.pkl')
+PKL_STORAGE_FILE = os.path.join(BASE_DIR, 'app', 'pkl', 'courses_data.pkl')
 
 FROM_SCHOOL_YEAR = 10
 TO_SCHOOL_YEAR = 16

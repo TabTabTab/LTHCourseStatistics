@@ -1,8 +1,8 @@
 #!/usr/bin/python3
 
 from config import COURSE_BASE_URL
-from course import Course
-from errors import handle_error
+from app.tools.course import Course
+from app.tools.errors import handle_error
 
 from lxml import html
 import requests

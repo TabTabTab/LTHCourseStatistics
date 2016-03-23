@@ -1,10 +1,10 @@
 #!/usr/bin/python3
 
 from config import REMOVABLE_CHARACTERS, AVAILABE_GRADES
-from courses_data import CoursesData
-from errors import handle_error
-from course import Course
-from student_course_summary import StudentCourseSummary
+from app.tools.courses_data import CoursesData
+from app.tools.errors import handle_error
+from app.tools.course import Course
+from app.tools.student_course_summary import StudentCourseSummary
 
 import sys, os
 from subprocess import Popen

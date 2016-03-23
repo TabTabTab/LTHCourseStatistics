@@ -1,8 +1,8 @@
 #!/usr/bin/python3
 
-from course_scraper import scrape_courses_data
+from app.tools.course_scraper import scrape_courses_data
 from config import FROM_SCHOOL_YEAR, TO_SCHOOL_YEAR, PROGRAM, PKL_STORAGE_FILE
-from errors import handle_error
+from app.tools.errors import handle_error
 
 import pickle
 import time

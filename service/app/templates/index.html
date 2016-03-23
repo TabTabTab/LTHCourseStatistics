@@ -1,12 +1,16 @@
-<html>
-  <head>
-    <title>{{ title }}</title>
-  </head>
-  <body>
-      <h1>Hello!</h1>
+{% extends "base.html" %}
+{% block content %}
+    <center>
+        <h1>LTH Course Stats</h1>
+      <div class="container">
+      <p><i>Please upload your student result pdf generated with course codes.</i></p>
+
+
       <form method=POST enctype=multipart/form-data action="{{ url_for('upload') }}">
-          <input type=file name=course_results>
-          <input type=submit value=Upload>
+          <input type=file class = "btn btn-default" name=course_results>
+          <input type=submit class = "btn btn-primary" style="margin-top:2px;" value=Upload>
       </form>
-  </body>
-</html>
+
+    </div>
+   </center>
+{% endblock %}}
