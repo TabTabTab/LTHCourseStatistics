@@ -7,3 +7,7 @@
     Wish there were a better way... not a fan of scraping a PDF...
 
     m = re.match("(\d+\.\d)_ ([345G])", str)
+
+* Add demo mode
+
+* Scrape PDF for name
