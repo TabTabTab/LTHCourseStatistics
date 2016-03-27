@@ -8,3 +8,4 @@ if __name__ == '__main__':
         from_year=FROM_SCHOOL_YEAR, to_year=TO_SCHOOL_YEAR, program=PROGRAM)
     courses_data.save()
     print("Saved scraped courses")
+    print("Data saved in \"{0}\"".format(PKL_STORAGE_FILE))
