@@ -50,8 +50,10 @@ class StudentCourseSummary(object):
     Student course summary
     '''
 
-    def __init__(self, finished_courses=[], unfinished_courses=[],
+    def __init__(self, language, name, finished_courses=[], unfinished_courses=[],
         grade_list=[], courses_data=None):
+        self.language = language
+        self.name = name.title()
         self.finished_courses = finished_courses
         self.unfinished_courses = unfinished_courses
         self.grade_list = grade_list
@@ -64,7 +66,10 @@ class StudentCourseSummary(object):
 
 
     def __str__(self):
-        header_str = "\n\n\n******COURSE SUMMARY******\n\n"
+        if self.name is not None:
+            header_str = "\n\n\n******COURSE SUMMARY FOR %s******\n\n" % self.name
+        else:
+            header_str = "\n\n\n******COURSE SUMMARY******\n\n"
         average_grade_str = "AVERAGE GRADE: {0:.3f}\n".format(self.average_grade)
         general_summary_str = "_____FINISHED_____\nPOINTS:{0}\nA POINTS:{1}\n courses: {2} --- \n_____UNFINISHED_____\nPOINTS:{3}\n courses: {4} ---\n".format(
             self.finished_points,self.finished_A_points, self.finished_courses, self.unfinished_points, self.unfinished_courses)
