@@ -37,7 +37,7 @@ def upload():
             pdf_abs_path = os.path.abspath(os.path.join(app.config['UPLOAD_FOLDER'], filename))
             student_course_summary = course_statistics.get_course_statistics(
                 pdf_abs_path)
-            return render_template('student_summary_%s.html' % student_course_summary.version,
+            return render_template('student_summary_%s.html' % student_course_summary.language,
                                    title='Summary',
                                    student_summary=student_course_summary)
 

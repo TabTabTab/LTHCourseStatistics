@@ -61,23 +61,22 @@ def parse_text(pdf_text_file, available_courses):
             name = lines[3]
             course_header = COURSES_SWE_HEADER
             unfinished_courses_header = UNFINISHED_COURSES_SWE_HEADER
-            version = "swe"
+            language = "swe"
         else:
             name = lines[1]
             course_header = COURSES_EN_HEADER
             unfinished_courses_header = UNFINISHED_COURSES_EN_HEADER
-            version = "eng"
-        return name, course_header, unfinished_courses_header, version
+            language = "eng"
+        return name, course_header, unfinished_courses_header, language
     finished_courses = []
     unfinished_courses = []
     grade_list = []
     is_parsing_courses = False
     active_course_list = None
-    version = "eng"
+    language = "eng"
     with open(pdf_text_file, 'r') as pdf_text_file:
         lines = pdf_text_file.readlines()
-        name, course_header, unfinished_courses_header, version = determine_language(lines[1])
-        print(version)
+        name, course_header, unfinished_courses_header, language = determine_language(lines[1])
         for line in lines:
             line = line.strip('\n')
             if line == course_header:
@@ -89,7 +88,7 @@ def parse_text(pdf_text_file, available_courses):
                 grade_in_line(line, grade_list)
                 course_in_line(line, active_course_list)
     grade_list = grade_list[:len(finished_courses)]
-    student_course_summary = StudentCourseSummary(version,name,finished_courses, unfinished_courses, grade_list)
+    student_course_summary = StudentCourseSummary(language,name,finished_courses, unfinished_courses, grade_list)
     return student_course_summary
 
 def main(argv):
