@@ -10,8 +10,9 @@
   $ sudo apt-get install python3-pip
 4. install flask for python3
   $ sudo pip3 install flask
-Error
-1. lxml 
+
+## Error
+1. lxml
    solution: pip3 install --upgrade lxml
 
 
