@@ -57,7 +57,9 @@ def parse_text(pdf_text_file, available_courses):
     is_parsing_courses = False
     active_course_list = None
     with open(pdf_text_file, 'r') as pdf_text_file:
-        for line in pdf_text_file:
+        lines = pdf_text_file.readlines()
+        name = lines[1]
+        for line in lines:
             line = line.strip('\n')
             if line == COURSES_HEADER:
                 is_parsing_courses = True
@@ -68,7 +70,7 @@ def parse_text(pdf_text_file, available_courses):
                 grade_in_line(line, grade_list)
                 course_in_line(line, active_course_list)
     grade_list = grade_list[:len(finished_courses)]
-    student_course_summary = StudentCourseSummary(finished_courses, unfinished_courses, grade_list)
+    student_course_summary = StudentCourseSummary(name,finished_courses, unfinished_courses, grade_list)
     return student_course_summary
 
 def main(argv):

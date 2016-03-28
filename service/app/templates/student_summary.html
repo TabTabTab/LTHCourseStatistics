@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% block content %}
   <div class="container">
-        <center><h1>This is your summary!</h1></center>
+        <center><h1>Summary for {{student_summary.name}}!</h1></center>
         <h2> General Info </h2>
         <div class="progress">
           <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="{{student_summary.finished_points}}"
