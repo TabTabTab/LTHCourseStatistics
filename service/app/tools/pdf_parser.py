@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 
-from config import REMOVABLE_CHARACTERS, AVAILABE_GRADES
+from config import COURSE_LINE_REMOVABLE_CHARACTERS, AVAILABE_GRADES
 from app.tools.courses_data import CoursesData
 from app.tools.errors import handle_error
 from app.tools.course import Course
@@ -43,7 +43,7 @@ def parse_text(pdf_text_file, available_courses):
         the course list and True is returned.
         Otherwise, False is returned
         '''
-        line = line.replace(REMOVABLE_CHARACTERS, '')
+        line = line.replace(COURSE_LINE_REMOVABLE_CHARACTERS, '')
         words = line.split(' ')
         courses_in_line = [word for word in words if word in available_courses]
         if courses_in_line:
