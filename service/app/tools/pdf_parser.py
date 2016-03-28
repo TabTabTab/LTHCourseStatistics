@@ -11,8 +11,10 @@ from subprocess import Popen
 import tempfile
 import re
 
-UNFINISHED_COURSES_HEADER = "Credits obtained in unfinished courses"
-COURSES_HEADER = "Courses"
+UNFINISHED_COURSES_EN_HEADER = "Credits obtained in unfinished courses"
+UNFINISHED_COURSES_SWE_HEADER = "Prov/moment i ej slutrapporterade kurser"
+COURSES_EN_HEADER = "Courses"
+COURSES_SWE_HEADER = "Avslutade kurser"
 
 def get_student_results(pdf_file, courses_data):
     temp_pdf_text_file = tempfile.NamedTemporaryFile(delete=True)
@@ -51,26 +53,43 @@ def parse_text(pdf_text_file, available_courses):
             return True
         else:
             return False
+    def determine_language(line):
+        """Determines the language of the pdf, currently only supports swedish and english"""
+        #TODO: remove hacky solution
+        #Hacky way to check if it is swedish or english pdf
+        if bool(re.search(r'\d',lines[1])):
+            name = lines[3]
+            course_header = COURSES_SWE_HEADER
+            unfinished_courses_header = UNFINISHED_COURSES_SWE_HEADER
+            version = "swe"
+        else:
+            name = lines[1]
+            course_header = COURSES_EN_HEADER
+            unfinished_courses_header = UNFINISHED_COURSES_EN_HEADER
+            version = "eng"
+        return name, course_header, unfinished_courses_header, version
     finished_courses = []
     unfinished_courses = []
     grade_list = []
     is_parsing_courses = False
     active_course_list = None
+    version = "eng"
     with open(pdf_text_file, 'r') as pdf_text_file:
         lines = pdf_text_file.readlines()
-        name = lines[1]
+        name, course_header, unfinished_courses_header, version = determine_language(lines[1])
+        print(version)
         for line in lines:
             line = line.strip('\n')
-            if line == COURSES_HEADER:
+            if line == course_header:
                 is_parsing_courses = True
                 active_course_list = finished_courses
-            elif line == UNFINISHED_COURSES_HEADER:
+            elif line == unfinished_courses_header:
                 active_course_list = unfinished_courses
             elif is_parsing_courses:
                 grade_in_line(line, grade_list)
                 course_in_line(line, active_course_list)
     grade_list = grade_list[:len(finished_courses)]
-    student_course_summary = StudentCourseSummary(name,finished_courses, unfinished_courses, grade_list)
+    student_course_summary = StudentCourseSummary(version,name,finished_courses, unfinished_courses, grade_list)
     return student_course_summary
 
 def main(argv):

@@ -50,8 +50,9 @@ class StudentCourseSummary(object):
     Student course summary
     '''
 
-    def __init__(self, name=None,finished_courses=[], unfinished_courses=[],
+    def __init__(self, version=None,name=None,finished_courses=[], unfinished_courses=[],
         grade_list=[], courses_data=None):
+        self.version = version
         self.name = name.title()
         self.finished_courses = finished_courses
         self.unfinished_courses = unfinished_courses
