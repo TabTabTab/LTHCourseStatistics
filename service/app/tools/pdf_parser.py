@@ -88,7 +88,7 @@ def parse_text(pdf_text_file, available_courses):
                 grade_in_line(line, grade_list)
                 course_in_line(line, active_course_list)
     grade_list = grade_list[:len(finished_courses)]
-    student_course_summary = StudentCourseSummary(language,name,finished_courses, unfinished_courses, grade_list)
+    student_course_summary = StudentCourseSummary(language, name, finished_courses, unfinished_courses, grade_list)
     return student_course_summary
 
 def main(argv):

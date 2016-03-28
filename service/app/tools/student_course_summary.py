@@ -66,7 +66,6 @@ class StudentCourseSummary(object):
 
 
     def __str__(self):
-        print("hello in studen")
         if self.name is not None:
             header_str = "\n\n\n******COURSE SUMMARY FOR %s******\n\n" % self.name
         else:
