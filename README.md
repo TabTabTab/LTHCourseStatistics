@@ -12,8 +12,8 @@
   $ sudo pip3 install flask
 
 ## Error
-1. lxml
-   solution: pip3 install --upgrade lxml
+1. ImportError: No module named 'lxml'.
+   $ pip3 install --upgrade lxml
 
 
 ### Scraping for courses
