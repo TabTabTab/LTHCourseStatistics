@@ -11,6 +11,10 @@
 4. install flask for python3
   $ sudo pip3 install flask
 
+## Error
+1. ImportError: No module named 'lxml'.
+   $ pip3 install --upgrade lxml
+
 
 ### Scraping for courses
 You need to scrape for courses before you can start the web service.
