@@ -1,6 +1,6 @@
 from flask import Flask
 
-from service_config import UPLOAD_FOLDER, ALLOWED_EXTENSIONS
+from config import UPLOAD_FOLDER, ALLOWED_EXTENSIONS
 
 app = Flask(__name__)
 app.config['ALLOWED_EXTENSIONS'] = ALLOWED_EXTENSIONS
