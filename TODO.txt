@@ -11,3 +11,5 @@
 * Add demo mode
 
 * Scrape PDF for name
+
+* Run the service in a virtual environment
