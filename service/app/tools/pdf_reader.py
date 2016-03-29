@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 
 from config import COURSE_LINE_REMOVABLE_CHARACTERS, AVAILABE_GRADES
-from app.tools.courses_data import CoursesData
+from app.tools.course_database import CourseDatabase
 from app.tools.errors import handle_error
 from app.tools.course import Course
 from app.tools.student_course_summary import StudentCourseSummary
@@ -16,10 +16,10 @@ UNFINISHED_COURSES_SWE_HEADER = "Prov/moment i ej slutrapporterade kurser"
 COURSES_EN_HEADER = "Courses"
 COURSES_SWE_HEADER = "Avslutade kurser"
 
-def get_student_results(pdf_file, courses_data):
+def get_student_results(pdf_file, course_database):
     temp_pdf_text_file = tempfile.NamedTemporaryFile(delete=True)
     temp_pdf_text_file_name = pdf_to_text(pdf_file, temp_pdf_text_file.name)
-    return parse_text(temp_pdf_text_file_name, courses_data.get_courses())
+    return parse_text(temp_pdf_text_file_name, course_database.get_all_courses())
 
 def pdf_to_text(pdf_file, temp_pdf_text_file_name):
     p = Popen(['pdftotext', pdf_file, temp_pdf_text_file_name])
@@ -96,10 +96,10 @@ def main(argv):
         handle_error("Please provide a course pdf file..")
     pdf_file = argv[0].strip()
     # just for test
-    courses_data = CoursesData()
-    courses_data.get_courses = lambda: {'EDAN40': Course(code='EDAN40', points=7.5, level='G2', initial_course_type="Test type")}
+    course_database = CourseDatabase()
+    course_database.get_courses = lambda: {'EDAN40': Course(code='EDAN40', points=7.5, level='G2', initial_course_type="Test type")}
 
-    read_course_data = get_student_results(pdf_file, courses_data)
+    read_course_data = get_student_results(pdf_file, course_database)
     print(read_course_data)
 
 if __name__ == '__main__':

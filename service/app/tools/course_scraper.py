@@ -63,7 +63,7 @@ def html_to_course(course_element, specialisation):
         return None
     return course
 
-def scrape_courses_data(from_year, to_year, program):
+def scrape_courses(from_year, to_year, program):
     '''
     Scrapes the LTH course pages in order to replace
     the current stored courses data
@@ -85,4 +85,4 @@ def scrape_courses_data(from_year, to_year, program):
     return courses_data
 
 if __name__ == '__main__':
-    print(scrape_courses_data(10, 11, 'D'))
+    print(scrape_courses(10, 11, 'D'))
