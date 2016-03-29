@@ -62,8 +62,7 @@ class StudentCourseSummary(object):
         self.finished_A_points = self.calc_finished_A_points()
         self.unfinished_points = self.calc_unfinished_points()
         self.average_grade = self.calc_average_grade()
-        self.specialisation_progress = self.calc_specialisation_progress()
-
+        self.specialisation_progresses = self.calc_specialisation_progresses()
 
     def __str__(self):
         if self.name is not None:
@@ -74,7 +73,7 @@ class StudentCourseSummary(object):
         general_summary_str = "_____FINISHED_____\nPOINTS:{0}\nA POINTS:{1}\n courses: {2} --- \n_____UNFINISHED_____\nPOINTS:{3}\n courses: {4} ---\n".format(
             self.finished_points,self.finished_A_points, self.finished_courses, self.unfinished_points, self.unfinished_courses)
         #specialisation_summary_str = "____SPECIALISATIONS____\n{0}".format(
-        #    "\n".join([self.specialisation_progress.items()]))
+        #    "\n".join([self.specialisation_progresses.items()]))
         return "\n".join([header_str, average_grade_str, general_summary_str]) #, specialisation_summary_str])
 
     def calc_finished_points(self):
@@ -97,12 +96,11 @@ class StudentCourseSummary(object):
             return grade_sum / weighted_points
         else:
             return 0
-    def calc_specialisation_progress(self):
-        #specialisation_progress = defaultdict(lambda: [0, 0, list(), list()])
-        specialisation_progress = defaultdict(lambda : SpecialisationProgress("hii"))
+    def calc_specialisation_progresses(self):
+        specialisation_progresses = dict()
         for course in self.finished_courses:
             for specialisation in course.get_specialisations():
-                if specialisation not in specialisation_progress:
-                    specialisation_progress[specialisation] = SpecialisationProgress(specialisation)
-                specialisation_progress[specialisation].add_course(course)
-        return specialisation_progress
+                if specialisation not in specialisation_progresses:
+                    specialisation_progresses[specialisation] = SpecialisationProgress(specialisation)
+                specialisation_progresses[specialisation].add_course(course)
+        return specialisation_progresses

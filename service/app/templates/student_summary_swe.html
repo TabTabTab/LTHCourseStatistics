@@ -21,7 +21,7 @@
         <p> <b>Medel betyg: </b>{% print("{0:.3f}".format(student_summary.average_grade)) %}</p>
 
         <h2> Sammanfattning av Specialisering </h2>
-        {% for specialisation_name, specialisation_progress in student_summary.specialisation_progress.items() %}
+        {% for specialisation_name, specialisation_progress in student_summary.specialisation_progresses.items() %}
             <h3> {{specialisation_name}} </h3>
 
                 <div class="progress">

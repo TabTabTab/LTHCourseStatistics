@@ -12,22 +12,28 @@ class CourseDatabase(object):
     '''
     Container for storing saved courses
     '''
-    def __init__(self, from_pkl=False, from_scrape=False,
-        from_year=FROM_SCHOOL_YEAR, to_year=TO_SCHOOL_YEAR, program=PROGRAM):
-        self.all_courses = None
-        self.last_update = None
+    def factory(from_pkl=False, from_scrape=False, from_year=FROM_SCHOOL_YEAR,
+                to_year=TO_SCHOOL_YEAR, program=PROGRAM):
+        if from_pkl:
+            return CourseDatabase.load_from_pkl()
+        elif from_scrape:
+            return self.scrape(from_year=FROM_SCHOOL_YEAR,
+                               to_year=TO_SCHOOL_YEAR, program=PROGRAM)
+        return None
+
+    def __init__(self, all_courses, last_update, from_year=FROM_SCHOOL_YEAR,
+                 to_year=TO_SCHOOL_YEAR, program=PROGRAM):
+        self.all_courses = all_courses
+        self.last_update = last_update
         self.from_year = from_year
         self.to_year = to_year
         self.program = program
         self.available_specialisations = set()
-        if from_pkl:
-            self.load_from_pkl()
-        elif from_scrape:
-            self.scrape()
 
-    def update_all_course_types(self):
-        specialisation_sets = [course.specialisations for course in self.get_all_courses()]
-        self.available_specialisations = self.specialisations.union(other_course.specialisations)
+
+    #def update_all_course_types(self):
+    #    specialisation_sets = [course.specialisations for course in self.get_all_courses()]
+    #    self.available_specialisations = self.specialisations.union(other_course.specialisations)
 
     def get_available_specialisations(self):
         return self.available_specialisations
@@ -35,22 +41,19 @@ class CourseDatabase(object):
     def get_all_courses(self):
         return self.all_courses
 
-    def scrape(self):
-        self.all_courses = scrape_courses(self.from_year, self.to_year, self.program)
+    def scrape(self, from_year=FROM_SCHOOL_YEAR,
+               to_year=TO_SCHOOL_YEAR, program=PROGRAM):
+        self.all_courses = scrape_courses(from_year, to_year, program)
         self.last_update = time.time()
 
-    def load_from_pkl(self):
+    def load_from_pkl():
         try:
             with open(PKL_STORAGE_FILE, 'rb') as pkl_file:
-                stored_course_database = pickle.load(pkl_file)
-                self.all_courses = stored_course_database.all_courses
-                self.from_year = stored_course_database.from_year
-                self.to_year = stored_course_database.to_year
-                self.last_update = stored_course_database.last_update
-                return self
+                return pickle.load(pkl_file)
         except IOError:
             handle_error("Could not access or find stored data in: '{0}'"
                 .format(PKL_STORAGE_FILE))
+            return None
 
     def save(self):
         with open(PKL_STORAGE_FILE, 'wb') as pkl_file:
@@ -64,6 +67,6 @@ class CourseDatabase(object):
                 self.all_courses)
 
 if __name__ == '__main__':
-    course_database = CourseDatabase(from_pkl=True, from_scrape=True,
+    course_database = CourseDatabase.factory(from_pkl=True, from_scrape=True,
         from_year=FROM_SCHOOL_YEAR, to_year=TO_SCHOOL_YEAR)
     print(course_database)

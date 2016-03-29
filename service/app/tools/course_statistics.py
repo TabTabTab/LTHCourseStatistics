@@ -12,7 +12,7 @@ from app.tools.errors import handle_error
 def get_course_statistics(pdf_file):
     from_pkl = True
     from_scrape = False
-    course_database = CourseDatabase(from_pkl=from_pkl, from_scrape=from_scrape,
+    course_database = CourseDatabase.factory(from_pkl=from_pkl, from_scrape=from_scrape,
         from_year=FROM_SCHOOL_YEAR, to_year=TO_SCHOOL_YEAR, program=PROGRAM)
     if from_scrape:
         #temporary testing line
