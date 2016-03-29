@@ -16,7 +16,7 @@ UNFINISHED_COURSES_SWE_HEADER = "Prov/moment i ej slutrapporterade kurser"
 COURSES_EN_HEADER = "Courses"
 COURSES_SWE_HEADER = "Avslutade kurser"
 
-def get_student_results(pdf_file, course_database):
+def read_student_results(pdf_file, course_database):
     temp_pdf_text_file = tempfile.NamedTemporaryFile(delete=True)
     temp_pdf_text_file_name = pdf_to_text(pdf_file, temp_pdf_text_file.name)
     return parse_text(temp_pdf_text_file_name, course_database.get_all_courses())
@@ -99,7 +99,7 @@ def main(argv):
     course_database = CourseDatabase()
     course_database.get_courses = lambda: {'EDAN40': Course(code='EDAN40', points=7.5, level='G2', initial_course_type="Test type")}
 
-    read_course_data = get_student_results(pdf_file, course_database)
+    read_course_data = read_student_results(pdf_file, course_database)
     print(read_course_data)
 
 if __name__ == '__main__':
