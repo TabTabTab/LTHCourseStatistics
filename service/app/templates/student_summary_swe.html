@@ -3,39 +3,18 @@
   <div class="container">
         <center><h1>Sammanfattning för {{student_summary.name}}!</h1></center>
         <h2> Allmän information </h2>
-        <div class="progress">
-          <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="{{student_summary.finished_points}}"
-            aria-valuemin="0" aria-valuemax="300" style="width:{{student_summary.finished_points*100/300.0}}%">
-            <p> <b>Avslutade poäng: </b>{{ student_summary.finished_points }}/300</p>
-          </div>
-        </div>
-
-        <div class="progress">
-          <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="{{student_summary.finished_A_points}}"
-            aria-valuemin="0" aria-valuemax="75" style="width:{{student_summary.finished_A_points*100/75.0}}%">
-            <p> <b>Avslutade A poäng: </b>{{ student_summary.finished_A_points }}/75</p>
-          </div>
-        </div>
+        {{ course_formater.progress_bar("Avslutade poäng", student_summary.finished_points, 300) }}
+        {{ course_formater.progress_bar("Avslutade A poäng", student_summary.finished_A_points, 75) }}
 
         <p> <b>Ej avslutade poäng: </b>{{ student_summary.unfinished_points }}</p>
-        <p> <b>Medel betyg: </b>{% print("{0:.3f}".format(student_summary.average_grade)) %}</p>
+        <p> <b>Medelbetyg: </b>{% print("{0:.3f}".format(student_summary.average_grade)) %}</p>
 
-        <h2> Sammanfattning av Specialisering </h2>
+        <h2> Specialiseringssammanfattning </h2>
         {% for specialisation_name, specialisation_progress in student_summary.specialisation_progresses.items() %}
             <h3> {{specialisation_name}} </h3>
 
-                <div class="progress">
-                  <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="{{specialisation_progress.get_total_points()}}"
-                    aria-valuemin="0" aria-valuemax="100" style="width:{{specialisation_progress.get_total_points()*100/100.0}}%">
-                    <p> <b>Totala poäng: </b>{{ specialisation_progress.get_total_points() }}</p>
-                  </div>
-                </div>
-                <div class="progress">
-                  <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="{{specialisation_progress.get_A_points()}}"
-                    aria-valuemin="0" aria-valuemax="100" style="width:{{specialisation_progress.get_A_points()*100/100.0}}%">
-                    <p> <b>A points: </b>{{ specialisation_progress.get_A_points() }}</p>
-                  </div>
-                </div>
+                {{ course_formater.progress_bar("Totala poäng", specialisation_progress.get_total_points(), 100) }}
+                {{ course_formater.progress_bar("A points", specialisation_progress.get_A_points(), 100) }}
 
                 {% if specialisation_progress.get_A_courses() %}
 
@@ -47,11 +26,7 @@
                                   </h4>
                             </div>
                             <div id="collapseA{{loop.index}}" class="panel-collapse collapse">
-                              <ul class="list-group">
-                                  {% for A_course in specialisation_progress.get_A_courses() %}
-                                    <li class="list-group-item"> {{ A_course }} </li>
-                                  {% endfor %}
-                              </ul>
+                              {{ course_formater.display_courses(specialisation_progress.get_A_courses()) }}
                           </div>
                         </div>
                     </div>
@@ -64,11 +39,7 @@
                               </h4>
                         </div>
                         <div id="collapse{{loop.index}}" class="panel-collapse collapse">
-                          <ul class="list-group">
-                              {% for regular_course in specialisation_progress.get_regular_courses() %}
-                                <li class="list-group-item"> {{ regular_course }} </li>
-                              {% endfor %}
-                          </ul>
+                            {{ course_formater.display_courses(specialisation_progress.get_regular_courses()) }}
                         </div>
                     </div>
                 </div>

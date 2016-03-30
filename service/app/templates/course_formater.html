@@ -1,0 +1,28 @@
+{% macro display_course(course) %}
+    <h4> {{ course.get_course_code() }} </h4>
+    <p> <b>Points:</b> {{ course.get_points() }} </p>
+    <p> <b>Level:</b> {{ course.get_level() }}
+    <p> <b>Specialisations</b> </p>
+    <ul class="list-group">
+    {% for specialisation in course.get_specialisations() %}
+        <li class="list-group-item">{{ specialisation }}</li>
+    {% endfor %}
+    </ul>
+{% endmacro %}
+
+{% macro display_courses(courses) %}
+    <ul class="list-group">
+        {% for course in courses %}
+            <li class="list-group-item"> {{ display_course(course) }} </li>
+        {% endfor %}
+    </ul>
+{% endmacro %}
+
+{% macro progress_bar(title, points, max_points) %}
+    <div class="progress">
+        <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="{{ points }}"
+            aria-valuemin="0" aria-valuemax="{{ max_points }}" style="width:{{ points * 100.0 / max_points }}%">
+            <p> <b>{{ title }}: </b>{{ points }} / {{max_points}}</p>
+        </div>
+    </div>
+{% endmacro %}
