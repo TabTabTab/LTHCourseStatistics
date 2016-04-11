@@ -16,14 +16,39 @@ UNFINISHED_COURSES_SWE_HEADER = "Prov/moment i ej slutrapporterade kurser"
 COURSES_EN_HEADER = "Courses"
 COURSES_SWE_HEADER = "Avslutade kurser"
 
+class ReadPDFException(Exception):
+    pass
+
 def read_student_results(pdf_file, course_database):
+    '''
+    Reads a students course results from a PDF file
+    Returns:
+        A student progress summary
+    Throws ReadPDFException if the PDF could not be read
+    '''
     temp_pdf_text_file = tempfile.NamedTemporaryFile(delete=True)
-    temp_pdf_text_file_name = pdf_to_text(pdf_file, temp_pdf_text_file.name)
-    return parse_text(temp_pdf_text_file_name, course_database.get_all_courses())
+    temp_pdf_text_file_name = None
+    try:
+        temp_pdf_text_file_name = pdf_to_text(pdf_file, temp_pdf_text_file.name)
+    except ReadPDFException as e:
+        raise
+    student_course_summary = parse_text(temp_pdf_text_file_name, course_database.get_all_courses())
+    return student_course_summary
 
 def pdf_to_text(pdf_file, temp_pdf_text_file_name):
+    '''
+    Translates a pdf file to text format.
+    Returns:
+        If Success:
+            the temp file name that the text will be written to
+        Else, if the PDF translation failed:
+            None
+    '''
     p = Popen(['pdftotext', pdf_file, temp_pdf_text_file_name])
     p.communicate()
+    return_code = p.returncode
+    if return_code:
+        raise ReadPDFException("pdftotext exited with status code {0}".format(return_code))
     return temp_pdf_text_file_name
 
 def parse_text(pdf_text_file, available_courses):
@@ -96,11 +121,13 @@ def main(argv):
         handle_error("Please provide a course pdf file..")
     pdf_file = argv[0].strip()
     # just for test
-    course_database = CourseDatabase()
-    course_database.get_courses = lambda: {'EDAN40': Course(code='EDAN40', points=7.5, level='G2', initial_course_type="Test type")}
-
-    read_course_data = read_student_results(pdf_file, course_database)
-    print(read_course_data)
+    course_database = CourseDatabase.factory(from_pkl=True)
+    try:
+        read_course_data = read_student_results(pdf_file, course_database)
+        print("Result:", read_course_data)
+    except ReadPDFException as e:
+        print("sadly, an exception occurred")
+        print(e)
 
 if __name__ == '__main__':
     main(sys.argv[1:])

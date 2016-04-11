@@ -27,19 +27,26 @@ def uploaded_file(filename):
     return send_from_directory(app.config['UPLOAD_FOLDER'],
                                filename)
 
-@app.route('/upload', methods=['GET', 'POST'])
-def upload():
+@app.route('/course_summary', methods=['GET', 'POST'])
+def course_summary():
     if request.method == 'POST' and 'course_results' in request.files:
         pdf_file = request.files['course_results']
         if pdf_file and allowed_file(pdf_file.filename):
             filename = secure_filename(pdf_file.filename)
             pdf_file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
             pdf_abs_path = os.path.abspath(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-            student_course_summary = course_statistics.get_course_statistics(
-                pdf_abs_path)
+            student_course_summary = None
+            try:
+                student_course_summary = course_statistics.get_course_statistics(
+                    pdf_abs_path)
+            except course_statistics.ReadPDFException as e:
+                return render_template('failure.html',
+                                       title='Failure',
+                                       redirect=True,
+                                       message='It seems the file you provided cound not be read as a PDF.')
+
             return render_template('student_summary_%s.html' % student_course_summary.language,
                                    title='Summary',
                                    student_summary=student_course_summary)
 
-    return render_template('failure.html',
-                           title='Failure')
+    return redirect(url_for('index'))

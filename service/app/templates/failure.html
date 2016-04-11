@@ -1,8 +1,12 @@
-<html>
-  <head>
-    <title>{{ title }}</title>
-  </head>
-  <body>
-      <h1>You should not be here</h1>
-  </body>
-</html>
+{% extends "base.html" %}
+{% block content %}
+    <div class="container">
+        <h2>{{ message }}</h2>
+        <p>{{ details }}</p>
+
+        {% if redirect %}
+            <p> You will be redirected to the index page. </p>
+            <meta http-equiv="refresh" content="5; url='/'" />
+        {% endif %}
+    </div>
+{% endblock %}

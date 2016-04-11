@@ -35,12 +35,12 @@ If not too inconvenient, try to stay at a 80 char length per line
 
 #### Example
 
-1 #!/usr/bin/python3
-2
-3 import errors
-4 import pdf_parser
-5
-6 import os
-7
-8 class TestClass(object):
-9 ...
+1. #!/usr/bin/python3
+2.
+3. import errors
+4. import pdf_parser
+5.
+6. import os
+7.
+8. class TestClass(object):
+9. ...

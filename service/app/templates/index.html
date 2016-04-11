@@ -6,7 +6,7 @@
         <div class="well" style="margin:10px;">
             <p><i>Please upload your student result pdf generated with course codes.</i></p>
 
-            <form method=POST enctype=multipart/form-data action="{{ url_for('upload') }}">
+            <form method=POST enctype=multipart/form-data action="{{ url_for('course_summary') }}">
                 <input type=file class = "btn btn-default" name=course_results>
                 <input type=submit class = "btn btn-primary" style="margin-top:2px;" value=Upload>
             </form>
@@ -40,4 +40,4 @@
         </div>
     </div>
 </center>
-{% endblock %}}
+{% endblock %}
