@@ -14,6 +14,8 @@
   $ sudo pip3 install flask
 5. install lxml for python3
   $ sudo pip3 install lxml
+6. make sure pdftotext is installed
+  $ sudo apt-get install poppler-utils
 
 ### Scraping for courses
 You need to scrape for courses before you can start the web service.
