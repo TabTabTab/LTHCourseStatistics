@@ -1,6 +1,4 @@
-
 import app.tools.course_statistics as course_statistics
-
 from app.tools.file_utils import create_unique_filename
 
 from flask import render_template, request, redirect, url_for, flash, send_from_directory

@@ -10,8 +10,11 @@ import requests
 def list_school_years(from_year, to_year):
     '''
     Creates a list of school years in string format
-    from_year (int) - the year the first school year starts
-    to_year (int) - the year the last school year ends
+    Args:
+        from_year: (int) the year the first school year starts
+        to_year: (int) the year the last school year ends
+    Returns:
+        a list o strings, each representing a school year
     '''
     return ["{0}_{1}".format(year, year + 1)
         for year in range(from_year, to_year)]
@@ -20,7 +23,7 @@ def course_table_info(course_table, school_year, container):
     '''
     Scrapes information about courses in a html table elements
     by traversing it.
-    The courses are then added to the container
+    The courses are then added to the container.
     '''
     table_parent = course_table.getparent()
     th3_above_parent = table_parent.getprevious()
