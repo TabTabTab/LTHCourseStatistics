@@ -1,18 +1,26 @@
 #!/usr/bin/python3
 
-import sys
-import os
-
 from config import FROM_SCHOOL_YEAR, TO_SCHOOL_YEAR, PROGRAM
 from app.tools.course_database import CourseDatabase
 from app.tools.pdf_reader import read_student_results, ReadPDFException
 from app.tools.errors import handle_error
 
+import sys
+import os
 
 def get_course_statistics(pdf_file):
+    '''
+    Creates a collection of student results based on the pdf provided.
+    Args:
+        pdf_file: a LTH course transcript pdf file
+    Returns:
+        a student course summary containing information from the pdf
+    Raises:
+        app.tools.pdf_reader.ReadPDFException: When the PDF could not be read
+    '''
     from_pkl = True
     from_scrape = False
-    course_database = CourseDatabase.factory(from_pkl=from_pkl, from_scrape=from_scrape,
+    course_database = CourseDatabase.factory(from_pkl=True, from_scrape=False,
         from_year=FROM_SCHOOL_YEAR, to_year=TO_SCHOOL_YEAR, program=PROGRAM)
     if from_scrape:
         #temporary testing line

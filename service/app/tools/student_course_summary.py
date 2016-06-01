@@ -47,7 +47,7 @@ class SpecialisationProgress(object):
 
 class StudentCourseSummary(object):
     '''
-    Student course summary
+    Represents a student course summary
     '''
 
     def __init__(self, language, name, finished_courses=[], unfinished_courses=[],
@@ -65,6 +65,9 @@ class StudentCourseSummary(object):
         self.specialisation_progresses = self.calc_specialisation_progresses()
 
     def __str__(self):
+        '''
+        For debugging
+        '''
         if self.name is not None:
             header_str = "\n\n\n******COURSE SUMMARY FOR %s******\n\n" % self.name
         else:
@@ -96,6 +99,7 @@ class StudentCourseSummary(object):
             return grade_sum / weighted_points
         else:
             return 0
+
     def calc_specialisation_progresses(self):
         specialisation_progresses = dict()
         for course in self.finished_courses:

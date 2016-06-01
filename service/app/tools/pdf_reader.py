@@ -22,9 +22,11 @@ class ReadPDFException(Exception):
 def read_student_results(pdf_file, course_database):
     '''
     Reads a students course results from a PDF file
+
     Returns:
         A student progress summary
-    Throws ReadPDFException if the PDF could not be read
+    Raises:
+        ReadPDFException: if the PDF could not be read
     '''
     temp_pdf_text_file = tempfile.NamedTemporaryFile(delete=True)
     temp_pdf_text_file_name = None
@@ -37,12 +39,12 @@ def read_student_results(pdf_file, course_database):
 
 def pdf_to_text(pdf_file, temp_pdf_text_file_name):
     '''
-    Translates a pdf file to text format.
+    Translates a pdf file to text and writes the text to a temporary file.
+
     Returns:
-        If Success:
-            the temp file name that the text will be written to
-        Else, if the PDF translation failed:
-            None
+        the temp file name that the pdf text has been written to
+    Raises:
+        ReadPDFException: if the PDF translation failed
     '''
     p = Popen(['pdftotext', pdf_file, temp_pdf_text_file_name])
     p.communicate()
@@ -52,6 +54,15 @@ def pdf_to_text(pdf_file, temp_pdf_text_file_name):
     return temp_pdf_text_file_name
 
 def parse_text(pdf_text_file, available_courses):
+    '''
+    Reads the text generated from a pdf file and checks which courses it contains
+
+    Args:
+        pdf_text_file: a file containing the text from a scraped pdf file
+        available_courses: A map containing avaiilable LTH courses.
+    Returns:
+        a student course summary containing the courses listed in the pdf_text_file
+    '''
     grade_regex = re.compile(".*(\d+\.\d)_ ([{0}]).*".format(AVAILABE_GRADES))
     def grade_in_line(ling, grade_list):
         '''
